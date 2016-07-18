@@ -2,6 +2,7 @@
   "name": "mplayer",
   "description": "player Crackle and Netflix",
   "main": "index",  
+  
   "license": "MIT",
   "homepage": "",
   "ignore": [
@@ -12,8 +13,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "^1.5.7",
-    "directory": "public/components"
+    "angular": "^1.5.7"    
   }
    
 }
