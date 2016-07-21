@@ -1,26 +1,36 @@
-module.factory('CepService', function($http) {
+    
+var BuscarFilmeAPI = angular.module('BuscarFilmeAPI', []);
 
-    var getCep = function(model) {
-      return $http({
-        url: "http://viacep.com.br/ws/" + model.endereco + "/json",
-        method: "get"
-      });
-    };
-    return {
-      getCep: getCep
-    };
-  });
+BuscarFilmeAPI.factory('BuscarFilmeAPI' ,function($http, $q){
+  var servico = this;
+  servico.Buscar = function (sNome){
+    var resultado = $q.defer();
 
+    var urlAPI = 'http://essearch.allocine.net/br/autocomplete?q=' + sNome;
 
-module.factory('LatLongService', function($http){
+     $http.get(urlAPI).then(function(resposta){
+          var lista = resposta.data.map (function(filmeAPI) {
+            return{
+              titulo: (filmeAPI.title1) ? filmeAPI.title1 : filmeAPI.title2,
+              urlCapa: filmeAPI.thumbnail,
+              infoAdicional : filmeAPI.metadata.map(function(metadataAPI){
+                return{ 
+                       legenda: metadataAPI.property,
+                       descricao: metadataAPI.value
+                  }
+               
+              })              
+           }
+          });
 
-    var getLatLong = function(model){
-      return $http({
-        url: "http://maps.google.com/maps/api/geocode/json?address="+ model.endereco + "&sensor=false&region=$region",
-        method: "get"
-      });
-    };
-    return {
-      getLatLong: getLatLong
-    };
-});
+          resultado.resolve(lista);
+
+     }, function(){
+         resultado.reject()
+
+    });
+     return resultado.promise;
+
+   
+  }
+})
