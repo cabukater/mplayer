@@ -10,15 +10,11 @@
    <!-- <script src="/javascripts/controllers/mplay-control.js"></script>-->
 <script type="text/javascript">
     angular.module('Locadora',[]).run(function($rootScope) {
-<<<<<<< HEAD
-      $rootScope.titulo = 'Locadora de Filmes';
-=======
       $rootScope.titulo = 'Locadora de Filmes',
       $rootScope.layout = {
            exibeListaFilme: true,
            exibeDetalheFilme:false
       };
->>>>>>> test
     })
 
 
@@ -27,17 +23,6 @@
   servico.Buscar = function (sNome){
     var resultado = $q.defer();
 
-<<<<<<< HEAD
-    var urlAPI = 'http://netflixroulette.net/api/api.php?title=' + sNome;
-
-     $http.get(urlAPI).then(function(resposta){
-          var lista = (function() {
-            return{
-              Title: show_title,
-              Year: release_year,
-              casting : show_cast
-            
-=======
     var urlAPI = 'http://essearch.allocine.net/br/autocomplete?q=' + sNome;
 
      $http.get(urlAPI).then(function(resposta){
@@ -52,7 +37,6 @@
                   }
                
               })              
->>>>>>> test
            }
           });
 
@@ -68,70 +52,7 @@
   }
 })
 
-<<<<<<< HEAD
-.controller('ListaFilmeController', function(BuscarFilmeAPI){
-=======
-
-
-.service('CarrinhoCompraService', function(){
-      var servico = this;
-
-      servico.listaFilmes = [];
-
-      servico.filmeExistente = function(sTituloFilme){
-            return servico.listaFilmes.filter(
-                  function(oFilme){
-                    return oFilme.tiulo == sTituloFilme;
-            })
- 
-      }
-
-      servico.adicionarFilme = function(oFilme){
-
-            var vFilmeExistente = servico.filmeExistente (oFilme.tiulo);
-
-            if (vFilmeExistente.length > 0)
-                vFilmeExistente[0].quantidade++;
-          else
-           {
-            servico.listaFilmes.push({
-                  quantidade: 1,
-                  tiulo: oFilme.tiulo,
-                  urlCapa: oFilme.urlCapa,
-                  precoUnitario: 10
-
-
-            })
-          }
-
-      }
-
-      servico.removerFilme = function (oFilme){
-          servico.listaFilmes = servico.listaFilmes.filter(function(oFilme){
-                 return oFilme.tiulo != sTituloFilme;
-
-           })
-      }
-
-      servico.exibeQuantidadeTotal = function(){
-            var quantidadeTotal = 0;
-
-            servico.listaFilmes.forEach (function(filme){
-                  quantidade += filme.quantidade;
-
-            })
-           
-            return quantidadeTotal;
-
-      }
-
-
-})
-
-
-
 .controller('ListaFilmeController', function($rootScope,BuscarFilmeAPI){
->>>>>>> test
    var ctrl = this;
    ctrl.titulo = 'Encontre seu filme';
    ctrl.textoBusca = null;
@@ -141,22 +62,13 @@
        console.log(lista)
     })
   }
-<<<<<<< HEAD
-})
-
-
-
-
-
-
-=======
 
   ctrl.AbrirDetalheFilme = function (filme){
       $rootScope.$broadcast('AbrirFilme', filme);
   }
 })
 
-.controller ('DetalheFilmeController', function($rootScope, CarrinhoCompraService){
+.controller ('DetalheFilmeController', function($rootScope){
        var ctrl = this;
 
       $rootScope.$on('AbrirFilme', function(evt, filme){
@@ -179,25 +91,14 @@
            }
 }
 
- ctrl.adicionarFilmeNoCarrinho = function(){
-      CarrinhoCompraService.adicionarFilme (ctrl.filmeSelecionado);
-
- }
-
-})
-
-
-.controller('CabecalhoController', function (CarrinhoCompraService){
-      var ctrl = this;
-      ctrl.Carrinho = CarrinhoCompraService;
-       ctrl.exibeQuantidadeTotalCarrinho = function (){
-            CarrinhoCompraService.exibeQuantidadeTotal();
-
-       }
 
 
 })
->>>>>>> test
+
+
+
+
+
 </script>
   <style>
     ul { list-style-type: none;padding: 0px;margin: 0px; }
@@ -206,20 +107,12 @@
 </head>
 <body>
   <div class="container">
-<<<<<<< HEAD
     <div class="jumbotron">
-=======
-    <div class="jumbotron" ng-controller="CabecalhoController as cc">
->>>>>>> test
       <h1>Locadora de Filmes</h1>
 
       <button class="btn btn-warning">
         Carrinho 
-<<<<<<< HEAD
         <span class="badge">0</span>
-=======
-        <span class="badge">{{cc.exibeQuantidadeTotalCarrinho()}}</span>
->>>>>>> test
       </button>
 
       <button class="btn btn-danger">
@@ -228,24 +121,6 @@
       </button>
     </div>
 
-<<<<<<< HEAD
-    <div class="panel panel-primary" ng-controller="ListaFilmeController as lf">
-      <div class="panel-heading">{{lf.titulo }}</div>
-
-      <div class="panel-body">
-        <div class="input-group">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="lf.Buscar();">Go!</button>
-      </span>
-      <input type="text" ng-model="lf.textoBusca" class="form-control" placeholder="Search for...">
-    </div><!-- /input-group -->
-  
-      </div>
-    </div>
-  </div>
-
-  
-=======
     <div class="panel panel-primary" ng-show="layout.exibeListaFilme" ng-controller="ListaFilmeController as lf">
       <div class="panel-heading">{{lf.titulo }}</div>
 
@@ -253,7 +128,7 @@
         <div  class="col-xs-12 col-md-8">
            <div class="input-group">
              <span class="input-group-btn">
-               <button class="btn btn-default" type="button" ng-click="lf.Buscar();" class="btn btn-default">Buscar</button>
+               <button class="btn btn-default" type="button" ng-click="lf.Buscar();">Go!</button>
             </span>
             <input type="text" ng-model="lf.textoBusca" class="form-control" placeholder="Search for...">
 
@@ -266,7 +141,7 @@
                  <li ng-repeat= "filme in lf.lista"> 
                 <img ng-src="{{filme.urlCapa}}">
                      {{filme.titulo}}
-                     <button ng-click="lf.AbrirDetalheFilme(filme);" class="btn btn-default">Ver Detalhe</button>
+                     <button ng-click="lf.AbrirDetalheFilme(filme);">Abrir</button>
                  </li>
 
                </ul>
@@ -285,14 +160,12 @@
         <ul>
               <li ng-repeat="info in df.filmeSelecionado.infoAdicional">{{ info.legenda }}  : {{ info.descricao }} </li>
         </ul>
-         <button ng-click="df.voltarParaLista();" class="btn btn-default">Voltar</button>
-           <button ng-click="df.adicionarFilmeNoCarrinho();" class="btn btn-default btn-danger">Add</button>
+         <button ng-click="df.voltarParaLista();">Voltar</button>
        
       </div>
   </div>
 
   </div>
->>>>>>> test
 
 
 </body>
