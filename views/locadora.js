@@ -52,65 +52,6 @@
   }
 })
 
-
-
-.service('CarrinhoCompraService', function(){
-      var servico = this;
-
-      servico.listaFilmes = [];
-
-      servico.filmeExistente = function(sTituloFilme){
-            return servico.listaFilmes.filter(
-                  function(oFilme){
-                    return oFilme.tiulo == sTituloFilme;
-            })
- 
-      }
-
-      servico.adicionarFilme = function(oFilme){
-
-            var vFilmeExistente = servico.filmeExistente (oFilme.tiulo);
-
-            if (vFilmeExistente.length > 0)
-                vFilmeExistente[0].quantidade++;
-          else
-           {
-            servico.listaFilmes.push({
-                  quantidade: 1,
-                  tiulo: oFilme.tiulo,
-                  urlCapa: oFilme.urlCapa,
-                  precoUnitario: 10
-
-
-            })
-          }
-
-      }
-
-      servico.removerFilme = function (oFilme){
-          servico.listaFilmes = servico.listaFilmes.filter(function(oFilme){
-                 return oFilme.tiulo != sTituloFilme;
-
-           })
-      }
-
-      servico.exibeQuantidadeTotal = function(){
-            var quantidadeTotal = 0;
-
-            servico.listaFilmes.forEach (function(filme){
-                  quantidade += filme.quantidade;
-
-            })
-           
-            return quantidadeTotal;
-
-      }
-
-
-})
-
-
-
 .controller('ListaFilmeController', function($rootScope,BuscarFilmeAPI){
    var ctrl = this;
    ctrl.titulo = 'Encontre seu filme';
@@ -127,7 +68,7 @@
   }
 })
 
-.controller ('DetalheFilmeController', function($rootScope, CarrinhoCompraService){
+.controller ('DetalheFilmeController', function($rootScope){
        var ctrl = this;
 
       $rootScope.$on('AbrirFilme', function(evt, filme){
@@ -150,24 +91,14 @@
            }
 }
 
- ctrl.adicionarFilmeNoCarrinho = function(){
-      CarrinhoCompraService.adicionarFilme (ctrl.filmeSelecionado);
-
- }
-
-})
-
-
-.controller('CabecalhoController', function (CarrinhoCompraService){
-      var ctrl = this;
-      ctrl.Carrinho = CarrinhoCompraService;
-       ctrl.exibeQuantidadeTotalCarrinho = function (){
-            CarrinhoCompraService.exibeQuantidadeTotal();
-
-       }
 
 
 })
+
+
+
+
+
 </script>
   <style>
     ul { list-style-type: none;padding: 0px;margin: 0px; }
@@ -176,12 +107,12 @@
 </head>
 <body>
   <div class="container">
-    <div class="jumbotron" ng-controller="CabecalhoController as cc">
+    <div class="jumbotron">
       <h1>Locadora de Filmes</h1>
 
       <button class="btn btn-warning">
         Carrinho 
-        <span class="badge">{{cc.exibeQuantidadeTotalCarrinho()}}</span>
+        <span class="badge">0</span>
       </button>
 
       <button class="btn btn-danger">
@@ -197,7 +128,7 @@
         <div  class="col-xs-12 col-md-8">
            <div class="input-group">
              <span class="input-group-btn">
-               <button class="btn btn-default" type="button" ng-click="lf.Buscar();" class="btn btn-default">Buscar</button>
+               <button class="btn btn-default" type="button" ng-click="lf.Buscar();">Go!</button>
             </span>
             <input type="text" ng-model="lf.textoBusca" class="form-control" placeholder="Search for...">
 
@@ -210,7 +141,7 @@
                  <li ng-repeat= "filme in lf.lista"> 
                 <img ng-src="{{filme.urlCapa}}">
                      {{filme.titulo}}
-                     <button ng-click="lf.AbrirDetalheFilme(filme);" class="btn btn-default">Ver Detalhe</button>
+                     <button ng-click="lf.AbrirDetalheFilme(filme);">Abrir</button>
                  </li>
 
                </ul>
@@ -229,8 +160,7 @@
         <ul>
               <li ng-repeat="info in df.filmeSelecionado.infoAdicional">{{ info.legenda }}  : {{ info.descricao }} </li>
         </ul>
-         <button ng-click="df.voltarParaLista();" class="btn btn-default">Voltar</button>
-           <button ng-click="df.adicionarFilmeNoCarrinho();" class="btn btn-default btn-danger">Add</button>
+         <button ng-click="df.voltarParaLista();">Voltar</button>
        
       </div>
   </div>
